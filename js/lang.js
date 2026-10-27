@@ -1,0 +1,36 @@
+window.I18N_CA = {
+  skip: 'Saltar al contingut', n1: 'Com mesurem', n2: 'Abans i després', n3: 'Preus', n4: 'L’estudi', book: 'Reservar',
+  h1: 'Celles, pestanyes i llavis amb un resultat natural',
+  hp: 'Disseny de celles amb fil, laminat, micropigmentació, lifting de pestanyes i tractaments de llavis, al centre de Girona. Més de sis anys realçant la teva bellesa natural.',
+  bookB: 'Reservar a Booksy', prices: 'Veure preus', rate: 'a Booksy (216 ressenyes) i a Google (164)',
+  aMap: 'Cella laminada i pestanyes amb lifting, en primer pla', mapBtn: 'Amagar les mesures',
+  mh: 'Cada cella es dissenya mesurant el teu rostre',
+  m1h: 'Inici', m1p: 'Marquem on comença la cella segons el lacrimal, perquè la mirada quedi oberta.',
+  m2h: 'Arc', m2p: 'Busquem el punt més alt en línia amb la pupil·la: és el que dona expressió.',
+  m3h: 'Final', m3p: 'Allarguem la cua fins on afavoreix els teus ulls, sense endurir el gest.',
+  mnote: 'Després treballem amb fil, cera, laminat o pigment segons el que vulguis aconseguir, respectant sempre el teu pèl natural.',
+  rh: 'Abans i després', rp: 'Treballs reals de l’estudi. Mantén premuda la foto per veure com era abans.', hold: 'Mantén premut per veure l’abans',
+  ph: 'Preus', aE1: 'Disseny de celles a l’estudi Beauty Nature', eh: 'Un estudi tranquil al centre',
+  ep: 'T’atenen la María José i la Karoline, en un espai acollidor i modern de la Travessia dels Canaders, en ple centre de Girona. Treballem amb tècniques personalitzades i productes de qualitat.',
+  aE2: 'Clienta a l’estudi davant del rètol de Beauty Nature',
+  vh: 'Vine a veure’ns', d1: 'Adreça', d2: 'Hores', d2v: 'Només amb cita prèvia. Les hores lliures, sempre al dia a Booksy.', d3: 'Pagament', d3v: 'Acceptem targeta. Tenim programa de fidelitat.',
+  ft: 'Celles i pestanyes', lg1: 'Avís legal', lg2: 'Privacitat', lg3: 'Galetes', lg4: 'Configurar galetes'
+};
+window.I18N_EN = {
+  skip: 'Skip to content', n1: 'How we measure', n2: 'Before and after', n3: 'Prices', n4: 'The studio', book: 'Book',
+  h1: 'Brows, lashes and lips with a natural finish',
+  hp: 'Brow threading, lamination, micropigmentation, lash lifts and lip treatments in the centre of Girona. More than six years bringing out your natural beauty.',
+  bookB: 'Book on Booksy', prices: 'See prices', rate: 'on Booksy (216 reviews) and on Google (164)',
+  aMap: 'Close-up of a laminated brow and lifted lashes', mapBtn: 'Hide the guides',
+  mh: 'Every brow is designed by measuring your face',
+  m1h: 'Start', m1p: 'We mark where the brow begins in line with the inner corner of your eye, to keep your look open.',
+  m2h: 'Arch', m2p: 'We find the highest point in line with your pupil: that is what gives expression.',
+  m3h: 'Tail', m3p: 'We extend the tail as far as it flatters your eyes, without hardening your expression.',
+  mnote: 'Then we work with thread, wax, lamination or pigment depending on what you want, always respecting your natural hair.',
+  rh: 'Before and after', rp: 'Real work from the studio. Press and hold the photo to see the before.', hold: 'Press and hold to see the before',
+  ph: 'Prices', aE1: 'Brow design at the Beauty Nature studio', eh: 'A calm studio in the centre',
+  ep: 'María José and Karoline look after you in a cosy, modern space on Travessia dels Canaders, right in the centre of Girona. We use personalised techniques and quality products.',
+  aE2: 'Client at the studio in front of the Beauty Nature sign',
+  vh: 'Come and see us', d1: 'Address', d2: 'Appointments', d2v: 'By appointment only. Free slots are always up to date on Booksy.', d3: 'Payment', d3v: 'We take cards. We have a loyalty programme.',
+  ft: 'Brows and lashes', lg1: 'Legal notice', lg2: 'Privacy', lg3: 'Cookies', lg4: 'Cookie settings'
+};
