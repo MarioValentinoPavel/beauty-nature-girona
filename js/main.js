@@ -1,4 +1,5 @@
-// Beauty·Nature · «Mapping»: las medidas de la ceja se trazan sobre la foto y un parpadeo enseña el antes
+// Beauty·Nature · «Atelier de la mirada»: las medidas de la ceja crecen sobre la foto macro de la portada,
+// un comparador que se arrastra enseña el antes y el después, y los precios reales de Booksy se abren por categorías.
 (() => {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const LI = () => ({ es: 0, ca: 1, en: 2 }[document.documentElement.lang] || 0);
@@ -7,7 +8,7 @@
   const NS = 'http://www.w3.org/2000/svg';
   const gs = () => !reduce && typeof gsap !== 'undefined';
 
-  // ---------- mapping sobre la foto (coordenadas del viewBox 1000 × 1421) ----------
+  // ---------- medidas sobre la foto (coordenadas del viewBox 1000 × 1421) ----------
   const E = [[195, 771], [419, 868], [540, 988]], B = [[281, 476], [540, 462], [856, 960]];
   const LAB = [['Inicio', 'Inici', 'Start'], ['Arco', 'Arc', 'Arch'], ['Final', 'Final', 'Tail']];
   const LPOS = [[150, 440], [500, 418], [880, 1020]];
@@ -22,7 +23,9 @@
     const relabel = () => labs.forEach((t, i) => (t.textContent = LAB[i][LI()]));
     document.addEventListener('langchange', relabel); relabel();
     if (gs()) {
-      const tl = gsap.timeline({ delay: .6 });
+      gsap.fromTo('.h-img', { clipPath: 'inset(0% 0% 100% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.6, ease: 'expo.inOut' });
+      gsap.fromTo('.h-img img', { scale: 1.3 }, { scale: 1, duration: 2.6, ease: 'expo.out' });
+      const tl = gsap.timeline({ delay: 1.2 });
       lines.forEach((l, i) => tl.fromTo(l, { attr: { x2: E[i][0], y2: E[i][1] } }, { attr: { x2: +l.dataset.x, y2: +l.dataset.y }, duration: .9, ease: 'expo.out' }, i * .18));
       tl.from(pts, { attr: { r: 0 }, duration: .6, stagger: .12, ease: 'back.out(3)' }, .6);
       tl.from(curve, { opacity: 0, duration: 1 }, 1);
@@ -34,47 +37,37 @@
     document.addEventListener('langchange', btnTxt);
   }
 
-  // ---------- antes y después ----------
+  // ---------- antes y después: comparador ----------
   const BA = [
-    { tab: ['Cejas 1', 'Celles 1', 'Brows 1'], img: 'micro-1', t: ['Micropigmentación de cejas', 'Micropigmentació de celles', 'Brow micropigmentation'] },
-    { tab: ['Cejas 2', 'Celles 2', 'Brows 2'], img: 'micro-2', t: ['Micropigmentación de cejas, también para ellos', 'Micropigmentació de celles, també per a ells', 'Brow micropigmentation, for men too'] },
-    { tab: ['Cejas 3', 'Celles 3', 'Brows 3'], img: 'micro-3', t: ['Micropigmentación: cejas más definidas y naturales', 'Micropigmentació: celles més definides i naturals', 'Micropigmentation: fuller, natural brows'] },
-    { tab: ['Pestañas', 'Pestanyes', 'Lashes'], img: 'lifting', cls: 'wide', t: ['Lifting y tinte de pestañas', 'Lifting i tint de pestanyes', 'Lash lift and tint'] },
-    { tab: ['Hidralips', 'Hidralips', 'Hidralips'], img: 'hidralips', cls: 'tall', t: ['Hidralips: hidratación profunda de labios', 'Hidralips: hidratació profunda de llavis', 'Hidralips: deep lip hydration'] },
-    { tab: ['Glossyps', 'Glossyps', 'Glossyps'], img: 'glossyps', cls: 'tall', t: ['Glossyps: color natural en los labios', 'Glossyps: color natural als llavis', 'Glossyps: natural lip colour'] }
+    { img: 'micro-1', t: ['Micropigmentación de cejas', 'Micropigmentació de celles', 'Brow micropigmentation'] },
+    { img: 'micro-2', t: ['Micropigmentación de cejas, también para ellos', 'Micropigmentació de celles, també per a ells', 'Brow micropigmentation, for men too'] },
+    { img: 'micro-3', t: ['Micropigmentación: cejas más definidas y naturales', 'Micropigmentació: celles més definides i naturals', 'Micropigmentation: fuller, natural brows'] },
+    { img: 'lifting', cls: 'wide', t: ['Lifting y tinte de pestañas', 'Lifting i tint de pestanyes', 'Lash lift and tint'] },
+    { img: 'hidralips', t: ['Hidralips: hidratación profunda de labios', 'Hidralips: hidratació profunda de llavis', 'Hidralips: deep lip hydration'] },
+    { img: 'glossyps', t: ['Glossyps: color natural en los labios', 'Glossyps: color natural als llavis', 'Glossyps: natural lip colour'] }
   ];
-  let cur = 0, before = false;
-  function beforeAfter() {
-    const tabs = document.getElementById('resTabs'), ba = document.getElementById('ba'), frame = ba.querySelector('.ba-frame');
-    const aft = document.getElementById('baAfter'), bef = document.getElementById('baBefore'), chip = document.getElementById('baChip'), cap = document.getElementById('baCap'), hold = document.getElementById('baHold');
-    const label = () => { chip.textContent = before ? T('Antes', 'Abans', 'Before') : T('Después', 'Després', 'After'); };
-    function renderTabs() { tabs.innerHTML = BA.map((b, i) => `<button type="button" role="tab" aria-selected="${i === cur}" data-i="${i}">${tx(b.tab)}</button>`).join(''); }
-    function select(i) {
+  let cur = 0;
+  function compare() {
+    const box = document.getElementById('cases'), cmp = document.getElementById('cmp'), range = document.getElementById('cRange');
+    const aft = document.getElementById('cAfter'), bef = document.getElementById('cBefore'), cap = document.getElementById('cCap');
+    const set = (v) => cmp.style.setProperty('--x', v + '%');
+    const sweep = (from) => { if (!gs()) { set(50); return; } const o = { v: from }; gsap.to(o, { v: 50, duration: 1.4, ease: 'expo.inOut', onUpdate: () => set(o.v) }); };
+    range.addEventListener('input', () => set(range.value));
+    const render = () => { box.innerHTML = BA.map((b, i) => `<button type="button" role="tab" aria-selected="${i === cur}" data-i="${i}"><small>0${i + 1}</small>${tx(b.t)}</button>`).join(''); };
+    const select = (i, animate) => {
       cur = i; const b = BA[i];
       aft.src = `assets/img/${b.img}-despues.jpg`; bef.src = `assets/img/${b.img}-antes.jpg`;
       aft.alt = `${tx(b.t)} · ${T('después', 'després', 'after')}`; bef.alt = `${tx(b.t)} · ${T('antes', 'abans', 'before')}`;
-      frame.className = 'ba-frame ' + (b.cls || '');
-      cap.textContent = tx(b.t);
-      tabs.querySelectorAll('button').forEach((x) => x.setAttribute('aria-selected', String(+x.dataset.i === i)));
-      set(false, true);
-    }
-    function set(v, instant) {
-      if (v === before && !instant) return;
-      before = v; hold.setAttribute('aria-pressed', String(v));
-      const swap = () => { ba.classList.toggle('show-before', v); label(); };
-      if (instant || !gs()) { swap(); return; }
-      // parpadeo: los párpados se cierran, cambia la foto y se abren
-      gsap.timeline().to('.lid', { scaleY: 1, duration: .11, ease: 'power2.in' }).add(swap).to('.lid', { scaleY: 0, duration: .22, ease: 'power2.out' });
-    }
-    tabs.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) select(+b.dataset.i); });
-    frame.addEventListener('pointerdown', (e) => { e.preventDefault(); set(true); });
-    ['pointerup', 'pointerleave', 'pointercancel'].forEach((ev) => frame.addEventListener(ev, () => set(false)));
-    frame.addEventListener('contextmenu', (e) => e.preventDefault());
-    hold.addEventListener('click', () => set(!before));
-    hold.addEventListener('keydown', (e) => { if (e.key === ' ' && !e.repeat) { e.preventDefault(); set(true); } });
-    hold.addEventListener('keyup', (e) => { if (e.key === ' ') set(false); });
-    document.addEventListener('langchange', () => { renderTabs(); select(cur); });
-    renderTabs(); select(0);
+      cmp.classList.toggle('wide', !!b.cls); cap.textContent = tx(b.t);
+      box.querySelectorAll('button').forEach((x) => x.setAttribute('aria-selected', String(+x.dataset.i === i)));
+      range.value = 50;
+      if (animate) sweep(88); else set(50);
+    };
+    box.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) select(+b.dataset.i, true); });
+    document.addEventListener('langchange', () => { render(); select(cur); });
+    render(); select(0);
+    // la línea barre al aparecer para enseñar que se puede arrastrar
+    if (gs()) ScrollTrigger.create({ trigger: cmp, start: 'top 70%', onEnter: () => sweep(12) });
   }
 
   // ---------- precios reales de Booksy ----------
@@ -92,32 +85,23 @@
       [['Diseño + sombreado + labio superior', 'Disseny + ombrejat + llavi superior', 'Design + shading + upper lip'], '30 min', 25], [['Cara completa', 'Cara completa', 'Full face'], '40 min', 40], [['Zona extra', 'Zona extra', 'Extra area'], '20 min', 12]]],
     [['Maquillaje', 'Maquillatge', 'Make-up'], [[['Maquillaje', 'Maquillatge', 'Make-up'], '1 h', 40], [['Novia: prueba + destino (desde)', 'Núvia: prova + destinació (des de)', 'Bridal: trial + on location (from)'], '1 h 30 min', 200]]]
   ];
+  let open = 0;
   function prices() {
-    document.getElementById('pGrid').innerHTML = P.map(([h, rows]) => `<section class="p-grp"><h3>${tx(h)}</h3><ul>${rows.map(([n, d, p]) => `<li><span>${tx(n)}</span><small>${d}</small><b>${p} €</b></li>`).join('')}</ul></section>`).join('');
+    document.getElementById('acc').innerHTML = P.map(([h, rows], i) => `<div class="grp${i === open ? ' open' : ''}"><button type="button" aria-expanded="${i === open}" aria-controls="g${i}" data-i="${i}"><span>${tx(h)}</span><small>${rows.length} ${T('servicios', 'serveis', 'services')}</small></button><div class="grp-b" id="g${i}"><div><ul>${rows.map(([n, d, p]) => `<li><span>${tx(n)}</span><small>${d}</small><b>${p} €</b></li>`).join('')}</ul></div></div></div>`).join('');
   }
-
-  function header() {
-    const top = document.querySelector('.top'); let last = 0;
-    addEventListener('scroll', () => {
-      const y = scrollY; top.classList.toggle('solid', y > 40);
-      if (y > 600 && y > last + 4) top.classList.add('hide'); else if (y < last - 4) top.classList.remove('hide');
-      last = y;
-    }, { passive: true });
-  }
-
-  function motion() {
-    gsap.registerPlugin(ScrollTrigger);
-    gsap.from('.hero-k, .hero h1, .hero-p, .hero-cta, .hero-rate', { opacity: 0, y: 26, duration: 1.4, stagger: .09, ease: 'expo.out' });
-    gsap.from('.map img', { scale: 1.15, duration: 2.4, ease: 'expo.out' });
-    gsap.utils.toArray('h2.rv').forEach((h) => gsap.from(h, { opacity: 0, y: 34, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: h, start: 'top 88%' } }));
-    gsap.utils.toArray('.m-list li, .p-grp, .rs blockquote, .estudio figure, .ba-frame').forEach((el, i) => gsap.from(el, { opacity: 0, y: 40, duration: 1.2, ease: 'expo.out', delay: (i % 3) * .07, scrollTrigger: { trigger: el, start: 'top 92%' } }));
+  function accordion() {
+    document.getElementById('acc').addEventListener('click', (e) => {
+      const b = e.target.closest('.grp > button'); if (!b) return;
+      const g = b.parentElement, was = g.classList.contains('open');
+      document.querySelectorAll('.grp').forEach((x) => { x.classList.remove('open'); x.firstElementChild.setAttribute('aria-expanded', 'false'); });
+      if (!was) { g.classList.add('open'); b.setAttribute('aria-expanded', 'true'); open = +b.dataset.i; } else open = -1;
+      setTimeout(() => typeof ScrollTrigger !== 'undefined' && ScrollTrigger.refresh(), 750);
+    });
   }
 
   function init() {
-    mapping(); beforeAfter(); prices(); header();
+    mapping(); compare(); prices(); accordion();
     document.addEventListener('langchange', prices);
-    if (gs()) motion();
-    document.fonts && document.fonts.ready.then(() => typeof ScrollTrigger !== 'undefined' && ScrollTrigger.refresh());
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
